@@ -1,3 +1,8 @@
+
+# Additional code being comitted by Sam Jones from 11th August 2020 for modelling micro-mosaics: 
+
+# 
+
 #' run the model scenarios specified in the input object (refactored)
 #' 
 #' refactored version starting to use genotype and niche arrays to reduce code volume
@@ -18,10 +23,20 @@
 #' @return a list of 3 lists of one or more scenarios: results, genotype and fitness. e.g. listOut$results[1] gives a results matrix for the first scenario
 #' @export
 
+# Source fitness genotype2() locally until Andy gets back re. pulling from github 
+# Cancel the source, testing github... 
+# source("F:/gitHub/resistance/R/fitnessGenotype2.R")
+
 runModel2 <- function(input = NULL,
                      produce.plots = FALSE,
                      savePlots=FALSE){
- 
+  
+  # Include rho as an input 
+  # Where rho is the probability of surviving death by natural causes during the feeding cycle of a mosquito.
+  # rho is being included for micro-mosaic work to allow modelling of a mosquito surviving a single insecticide and thus, being able to encounter another.
+  
+  
+  
   # to allow default run
   if (is.null(input)) input <- setInputOneScenario()
   
@@ -118,6 +133,8 @@ runModel2 <- function(input = NULL,
     a_nichetog['A','b'] <- input[51,scen_num]
     a_nichetog['a','B'] <- input[52,scen_num]
     
+    # Rho parameter:
+    rho <- input[59, scen_num]
     #andy to read new sexLinked parameter, if not present set to FALSE
     sexLinked <- FALSE
     if (nrow(input) > 52)
@@ -168,7 +185,7 @@ runModel2 <- function(input = NULL,
                               a_fitnic = a_fitnic )
     
     ## fitness of each genotype by sex
-    a_fitgen <- fitnessGenotype( a_fitnic = a_fitnic, a_expos = a_expos, a_fitgen = a_fitgen )
+    a_fitgen <- fitnessGenotype2( a_fitnic = a_fitnic, a_expos = a_expos, a_fitgen = a_fitgen, rho_param = rho )
  
     #testing
     # print("testing indiv fitness for exposure:")
@@ -227,7 +244,7 @@ runModel2 <- function(input = NULL,
     listOut$fitness[[scen_num]] <- fitnessOutput( a_fitnic )    
     
     #25/10/16 adding output of fitness by genotype and generation
-    listOut$fit_time_genotype <- fit_time_genotype(genotype, a_fitgen)
+    listOut$fit_time_genotype[[scen_num]] <- fit_time_genotype(genotype, a_fitgen)
     
     ## Plots
     if( produce.plots ) plot_outputs_all( listOut=listOut, scen_num=scen_num, savePlots=savePlots)
