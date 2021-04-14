@@ -77,4 +77,12 @@ Running the code is slightly involved, you may want to explore the user interfac
     
     # all figures for Levick, South & Hastings (2017)
     # inst/documents/paper1/paper1_results_figs_slimmed_50_rr.Rmd
+   
+### Updated methodology for allowing multiple feeds (Mosaics, Panel nets)
+
+    # Use SensiAnMosaic to simulate scenarios. Parameters can be directly configured inside this function
+    # Correct_mix_deploy should be 0 for mosaics, 1 for mixtures, in between for panel nets. 
+    # The functions and example code within combine_data_functions will create comparison files between methods
+    # or (using the nocensor functions), trim the output to a more manageable size for looking at single methods. 
+    
   
